@@ -1,0 +1,52 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\avatars\Hari_6a4be628-344a-4500-bd86-0070fec9b78a.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>real-time-collaboration</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/real-time-collaboration</BasePath>
+      <RelativePath>avatars/Hari_6a4be628-344a-4500-bd86-0070fec9b78a.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\avatars\Hari_6a4be628-344a-4500-bd86-0070fec9b78a.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\avatars\Krish_Sitikhu_52711ab0-af7b-419d-8848-a957de80b6bb.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>real-time-collaboration</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/real-time-collaboration</BasePath>
+      <RelativePath>avatars/Krish_Sitikhu_52711ab0-af7b-419d-8848-a957de80b6bb.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\avatars\Krish_Sitikhu_52711ab0-af7b-419d-8848-a957de80b6bb.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\avatars\ram_a87ce716-6ed0-4b9b-9ab5-53dd04e538ce.JPG))">
+      <SourceType>Package</SourceType>
+      <SourceId>real-time-collaboration</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/real-time-collaboration</BasePath>
+      <RelativePath>avatars/ram_a87ce716-6ed0-4b9b-9ab5-53dd04e538ce.JPG</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\avatars\ram_a87ce716-6ed0-4b9b-9ab5-53dd04e538ce.JPG))</OriginalItemSpec>
+    </StaticWebAsset>
+  </ItemGroup>
+</Project>

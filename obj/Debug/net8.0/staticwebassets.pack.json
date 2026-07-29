@@ -1,0 +1,33 @@
+{
+  "Files": [
+    {
+      "Id": "/home/krish/Projects/personal/Real-time-collaboratiion/real-time-collaboration/wwwroot/avatars/Hari_6a4be628-344a-4500-bd86-0070fec9b78a.png",
+      "PackagePath": "staticwebassets/avatars/Hari_6a4be628-344a-4500-bd86-0070fec9b78a.png"
+    },
+    {
+      "Id": "/home/krish/Projects/personal/Real-time-collaboratiion/real-time-collaboration/wwwroot/avatars/Krish_Sitikhu_52711ab0-af7b-419d-8848-a957de80b6bb.png",
+      "PackagePath": "staticwebassets/avatars/Krish_Sitikhu_52711ab0-af7b-419d-8848-a957de80b6bb.png"
+    },
+    {
+      "Id": "/home/krish/Projects/personal/Real-time-collaboratiion/real-time-collaboration/wwwroot/avatars/ram_a87ce716-6ed0-4b9b-9ab5-53dd04e538ce.JPG",
+      "PackagePath": "staticwebassets/avatars/ram_a87ce716-6ed0-4b9b-9ab5-53dd04e538ce.JPG"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.real-time-collaboration.props",
+      "PackagePath": "build\\real-time-collaboration.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.real-time-collaboration.props",
+      "PackagePath": "buildMultiTargeting\\real-time-collaboration.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.real-time-collaboration.props",
+      "PackagePath": "buildTransitive\\real-time-collaboration.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.real-time-collaboration.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
