@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Mvc;
 using RealTimeCollaboration.Modules.Auth.Utils;
 using RealTimeCollaboration.Modules.Message.DTOs;
 using RealTimeCollaboration.Modules.Message.Interfaces;
+using RealTimeCollaboration.Modules.SignalR;
 
 namespace RealTimeCollaboration.Modules.Message;
 
@@ -12,10 +14,12 @@ namespace RealTimeCollaboration.Modules.Message;
 public class MessageController : ControllerBase
 {
     private readonly IMessageService _messageService;
+    private readonly IHubContext<ChatHub> _hubContext;
 
-    public MessageController(IMessageService messageService)
+    public MessageController(IMessageService messageService, IHubContext<ChatHub> hubContext)
     {
         _messageService = messageService;
+        _hubContext = hubContext;
     }
 
     [HttpPost]
@@ -32,6 +36,10 @@ public class MessageController : ControllerBase
         try
         {
             var message = await _messageService.CreateAsync(channelId, userId.Value, createMessageDTO);
+            await _hubContext.Clients
+                .Group(ChatHub.GetChannelGroupName(channelId))
+                .SendAsync("message.created", message);
+
             return CreatedAtAction(nameof(GetMessages), new { channelId }, message);
         }
         catch (ArgumentException exception)
@@ -70,6 +78,10 @@ public class MessageController : ControllerBase
         {
             return NotFound();
         }
+
+        await _hubContext.Clients
+            .Group(ChatHub.GetChannelGroupName(channelId))
+            .SendAsync("message.deleted", new { id, channelId });
 
         return NoContent();
     }

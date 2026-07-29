@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using RealTimeCollaboration.Modules.Auth.Utils;
+using RealTimeCollaboration.Modules.Message.Interfaces;
 using RealTimeCollaboration.Modules.Reaction.DTOs;
 using RealTimeCollaboration.Modules.Reaction.Interfaces;
+using RealTimeCollaboration.Modules.SignalR;
 
 namespace RealTimeCollaboration.Modules.Reaction;
 
@@ -12,10 +15,17 @@ namespace RealTimeCollaboration.Modules.Reaction;
 public class ReactionController : ControllerBase
 {
     private readonly IReactionService _reactionService;
+    private readonly IMessageRepository _messageRepository;
+    private readonly IHubContext<ChatHub> _hubContext;
 
-    public ReactionController(IReactionService reactionService)
+    public ReactionController(
+        IReactionService reactionService,
+        IMessageRepository messageRepository,
+        IHubContext<ChatHub> hubContext)
     {
         _reactionService = reactionService;
+        _messageRepository = messageRepository;
+        _hubContext = hubContext;
     }
 
     [HttpPost]
@@ -32,6 +42,14 @@ public class ReactionController : ControllerBase
         try
         {
             var reaction = await _reactionService.CreateAsync(messageId, userId.Value, createReactionDTO);
+            var message = await _messageRepository.GetByIdAsync(messageId);
+            if (message is not null)
+            {
+                await _hubContext.Clients
+                    .Group(ChatHub.GetChannelGroupName(message.ChannelId))
+                    .SendAsync("reaction.created", reaction);
+            }
+
             return CreatedAtAction(nameof(CreateReaction), new { messageId }, reaction);
         }
         catch (InvalidOperationException exception)
@@ -59,6 +77,14 @@ public class ReactionController : ControllerBase
             return NotFound();
         }
 
+        var message = await _messageRepository.GetByIdAsync(messageId);
+        if (message is not null)
+        {
+            await _hubContext.Clients
+                .Group(ChatHub.GetChannelGroupName(message.ChannelId))
+                .SendAsync("reaction.deleted", new { messageId, userId = userId.Value, emoji });
+        }
+
         return NoContent();
     }
 
@@ -79,6 +105,14 @@ public class ReactionController : ControllerBase
             if (reaction is null)
             {
                 return NotFound();
+            }
+
+            var message = await _messageRepository.GetByIdAsync(messageId);
+            if (message is not null)
+            {
+                await _hubContext.Clients
+                    .Group(ChatHub.GetChannelGroupName(message.ChannelId))
+                    .SendAsync("reaction.updated", reaction);
             }
 
             return Ok(reaction);

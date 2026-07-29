@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../build/real-time-collaboration.props" />
-</Project>

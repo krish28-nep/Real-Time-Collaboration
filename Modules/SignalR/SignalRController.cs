@@ -10,6 +10,18 @@ public class ChatHub : Hub
         await Clients.Caller.SendAsync("JoinedUser", userId);
     }
 
+    public async Task JoinChannel(int channelId)
+    {
+        await Groups.AddToGroupAsync(Context.ConnectionId, GetChannelGroupName(channelId));
+        await Clients.Caller.SendAsync("JoinedChannel", channelId);
+    }
+
+    public async Task LeaveChannel(int channelId)
+    {
+        await Groups.RemoveFromGroupAsync(Context.ConnectionId, GetChannelGroupName(channelId));
+        await Clients.Caller.SendAsync("LeftChannel", channelId);
+    }
+
     public async Task SendPrivateMessage(int senderId, int receiverId, string message)
     {
         var sentAt = DateTime.UtcNow;
@@ -32,5 +44,10 @@ public class ChatHub : Hub
     private static string GetUserGroupName(int userId)
     {
         return $"user:{userId}";
+    }
+
+    public static string GetChannelGroupName(int channelId)
+    {
+        return $"channel:{channelId}";
     }
 }

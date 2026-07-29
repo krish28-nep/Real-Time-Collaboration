@@ -1,0 +1,58 @@
+# Build output
+bin/
+obj/
+Debug/
+Release/
+x64/
+x86/
+
+# .NET generated files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+*.nupkg
+*.snupkg
+*.symbols.nupkg
+TestResults/
+coverage/
+coverage.*
+*.coverage
+*.coveragexml
+
+# IDE/editor
+.vs/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+
+# Local settings and secrets
+.env
+.env.*
+!.env.example
+appsettings.Local.json
+appsettings.*.Local.json
+secrets.json
+
+# Logs
+*.log
+logs/
+
+# Runtime files
+*.pid
+*.seed
+*.pid.lock
+
+# Uploaded/generated user files
+wwwroot/avatars/*
+!wwwroot/avatars/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
