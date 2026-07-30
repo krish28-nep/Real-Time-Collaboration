@@ -1,10 +1,13 @@
 namespace RealTimeCollaboration.Modules.Invitation.Interfaces;
+using RealTimeCollaboration.Modules.Invitation.DTOs;
 
 public interface IInvitationService
 {
-    Task<Models.Invitation> CreateAsync(int workSpaceId, int invitedByUserId);
+    Task<InvitationResponseDTO> CreateAsync(int workSpaceId, int invitedByUserId, int invitedUserId);
 
-    Task<Models.Invitation?> GetByTokenAsync(string token);
+    Task<InvitationResponseDTO?> GetByTokenAsync(string token);
+
+    Task<IEnumerable<InvitationResponseDTO>> GetPendingByUserIdAsync(int userId);
 
     // Returns (success, errorMessage)
     Task<(bool success, string? error)> ConsumeAsync(string token, int joiningUserId);

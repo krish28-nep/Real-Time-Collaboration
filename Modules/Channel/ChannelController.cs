@@ -56,6 +56,31 @@ public class ChannelController : ControllerBase
         }
     }
 
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<Models.Channel>> UpdateChannel(int workspaceId, int id, [FromBody] UpdateChannelDTO updateChannelDTO)
+    {
+        var userId = AuthUserContext.GetCurrentUserId(User);
+        if (userId is null)
+        {
+            return Unauthorized();
+        }
+
+        try
+        {
+            var channel = await _channelService.UpdateAsync(id, workspaceId, updateChannelDTO);
+            if (channel is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(channel);
+        }
+        catch (ArgumentException exception)
+        {
+            return BadRequest(new { message = exception.Message });
+        }
+    }
+
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteChannel(int workspaceId, int id)
     {

@@ -8,7 +8,7 @@ namespace RealTimeCollaboration.Modules.Auth;
 [Route("/api/auth")]
 public class AuthController : ControllerBase
 {
-    private const string AccessTokenCookieName = "Access_Token";
+    private const string AccessTokenCookieName = "accessToken";
 
     private readonly IAuthService _authService;
 
@@ -24,7 +24,7 @@ public class AuthController : ControllerBase
 
         if (token is null)
         {
-            return Unauthorized();
+            return Unauthorized(new { message = "Invalid credentials" });
         }
 
         Response.Cookies.Append(AccessTokenCookieName, token, CreateAccessTokenCookieOptions());

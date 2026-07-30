@@ -4,13 +4,13 @@ namespace RealTimeCollaboration.Modules.WorkSpace.Interfaces;
 
 public interface IWorkSpaceService
 {
-    Task<IEnumerable<Models.WorkSpace>> GetAllByUserIdAsync(int userId);
+    Task<IEnumerable<WorkSpaceResponseDTO>> GetAllByUserIdAsync(int userId);
 
     Task<IEnumerable<WorkSpaceUserDTO>> GetAllUserByWorkspaceIdAsync(int workspaceId);
 
-    Task<Models.WorkSpace?> GetByIdentifierAsync(string identifier, int userId);
+    Task<WorkSpaceResponseDTO?> GetByIdentifierAsync(string identifier, int userId);
 
-    Task<Models.WorkSpace> CreateAsync(CreateWorkSpaceDTO workSpace, int userId);
+    Task<WorkSpaceResponseDTO> CreateAsync(CreateWorkSpaceDTO workSpace, int userId);
 
     Task<bool> DeleteAsync(int id, int userId);
 }

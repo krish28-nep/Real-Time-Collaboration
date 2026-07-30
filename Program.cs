@@ -19,7 +19,7 @@ using RealTimeCollaboration.Modules.WorkSpace;
 using RealTimeCollaboration.Modules.WorkSpace.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
-const string accessTokenCookieName = "Access_Token";
+const string accessTokenCookieName = "accessToken";
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -27,6 +27,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Frontend", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:3000", "http://localhost:3001")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
 
 var jwtKey = builder.Configuration["Jwt:Key"]
     ?? throw new InvalidOperationException("Jwt:Key is not configured.");
@@ -55,10 +66,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             OnMessageReceived = context =>
             {
-                if (string.IsNullOrEmpty(context.Token)
-                    && context.Request.Cookies.TryGetValue(accessTokenCookieName, out var accessToken))
+                if (string.IsNullOrEmpty(context.Token))
                 {
-                    context.Token = accessToken;
+                    var accessToken = context.Request.Query["access_token"];
+                    var path = context.HttpContext.Request.Path;
+
+                    if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/api/signalr"))
+                    {
+                        context.Token = accessToken;
+                    }
+                    else if (context.Request.Cookies.TryGetValue(accessTokenCookieName, out var cookieAccessToken))
+                    {
+                        context.Token = cookieAccessToken;
+                    }
                 }
 
                 return Task.CompletedTask;
@@ -94,6 +114,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseCors("Frontend");
 
 app.UseAuthentication();
 app.UseAuthorization();

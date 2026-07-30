@@ -27,6 +27,18 @@ public class InvitationRepository : IInvitationRepository
             .FirstOrDefaultAsync(i => i.Token == token);
     }
 
+    public async Task<IEnumerable<Models.Invitation>> GetPendingByUserIdAsync(int userId, DateTime now)
+    {
+        return await _context.Invitations
+            .AsNoTracking()
+            .Where(invitation =>
+                invitation.InvitedUserId == userId
+                && invitation.AcceptAt == null
+                && invitation.ExpireAt > now)
+            .OrderBy(invitation => invitation.ExpireAt)
+            .ToListAsync();
+    }
+
     public async Task<bool> DeleteAsync(int id)
     {
         var inv = await _context.Invitations.FindAsync(id);

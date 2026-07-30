@@ -19,7 +19,7 @@ public class WorkSpaceController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Models.WorkSpace>>> GetMyWorkSpaces()
+    public async Task<ActionResult<IEnumerable<WorkSpaceResponseDTO>>> GetMyWorkSpaces()
     {
         var userId = AuthUserContext.GetCurrentUserId(User);
         if (userId is null)
@@ -33,7 +33,7 @@ public class WorkSpaceController : ControllerBase
     }
 
     [HttpGet("{identifier}")]
-    public async Task<ActionResult<Models.WorkSpace>> GetWorkSpaceById(string identifier)
+    public async Task<ActionResult<WorkSpaceResponseDTO>> GetWorkSpaceById(string identifier)
     {
         var userId = AuthUserContext.GetCurrentUserId(User);
         if (userId is null)
@@ -63,7 +63,7 @@ public class WorkSpaceController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Models.WorkSpace>> CreateWorkSpace([FromBody] CreateWorkSpaceDTO createWorkSpaceDTO)
+    public async Task<ActionResult<WorkSpaceResponseDTO>> CreateWorkSpace([FromBody] CreateWorkSpaceDTO createWorkSpaceDTO)
     {
         var userId = AuthUserContext.GetCurrentUserId(User);
         if (userId is null)

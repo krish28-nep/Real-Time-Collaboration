@@ -1,5 +1,6 @@
 namespace RealTimeCollaboration.Modules.WorkSpace.Interfaces;
 using RealTimeCollaboration.Modules.WorkSpace.DTOs;
+using ChannelModel = RealTimeCollaboration.Modules.Channel.Models.Channel;
 
 public interface IWorkSpaceRepository
 {
@@ -12,6 +13,8 @@ public interface IWorkSpaceRepository
     Task<Models.WorkSpace> CreateAsync(Models.WorkSpace workSpace);
 
     Task<Models.UserWorkSpace> CreateUserWorkSpaceAsync(Models.UserWorkSpace userWorkSpace);
+
+    Task<ChannelModel> CreateChannelAsync(ChannelModel channel);
 
     Task<bool> IsUserMemberAsync(int userId, int workSpaceId);
 

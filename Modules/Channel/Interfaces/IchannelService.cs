@@ -8,5 +8,7 @@ public interface IChannelService
 
     Task<Models.Channel> CreateAsync(CreateChannelDTO channel, int workspaceId);
 
+    Task<Models.Channel?> UpdateAsync(int id, int workspaceId, UpdateChannelDTO channel);
+
     Task<bool> DeleteAsync(int id, int workspaceId);
 }

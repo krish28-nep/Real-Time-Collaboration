@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RealTimeCollaboration.Modules.Auth.Utils;
 using RealTimeCollaboration.Modules.User.DTOs;
 using RealTimeCollaboration.Modules.User.Interfaces;
 
@@ -20,6 +22,25 @@ public class UserController : ControllerBase
     {
         var users = await _userService.GetAllUsersAsync();
         return Ok(users);
+    }
+
+    [Authorize]
+    [HttpGet("me")]
+    public async Task<ActionResult<Models.User>> GetCurrentUser()
+    {
+        var userId = AuthUserContext.GetCurrentUserId(User);
+        if (userId is null)
+        {
+            return Unauthorized();
+        }
+
+        var user = await _userService.GetUserByIdAsync(userId.Value);
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(user);
     }
 
     [HttpGet("{id:int}")]

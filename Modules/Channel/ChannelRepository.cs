@@ -30,6 +30,25 @@ public class ChannelRepository : IChannelRepository
         return channel;
     }
 
+    public async Task<Models.Channel?> UpdateAsync(int id, int workspaceId, string name, string slug)
+    {
+        var channel = await _context.Channels
+            .FirstOrDefaultAsync(channel => channel.Id == id && channel.WorkSpaceId == workspaceId);
+
+        if (channel is null)
+        {
+            return null;
+        }
+
+        channel.Name = name;
+        channel.Slug = slug;
+        channel.UpdatedAt = DateTime.UtcNow;
+
+        await _context.SaveChangesAsync();
+
+        return channel;
+    }
+
     public async Task<bool> DeleteAsync(int id, int workspaceId)
     {
         var channel = await _context.Channels

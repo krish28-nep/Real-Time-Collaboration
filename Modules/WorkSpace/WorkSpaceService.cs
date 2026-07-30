@@ -1,6 +1,7 @@
 using RealTimeCollaboration.Common.Utils;
 using RealTimeCollaboration.Modules.WorkSpace.DTOs;
 using RealTimeCollaboration.Modules.WorkSpace.Interfaces;
+using ChannelModel = RealTimeCollaboration.Modules.Channel.Models.Channel;
 
 namespace RealTimeCollaboration.Modules.WorkSpace;
 
@@ -13,12 +14,14 @@ public class WorkSpaceService : IWorkSpaceService
         _workSpaceRepository = workSpaceRepository;
     }
 
-    public async Task<IEnumerable<Models.WorkSpace>> GetAllByUserIdAsync(int userId)
+    public async Task<IEnumerable<WorkSpaceResponseDTO>> GetAllByUserIdAsync(int userId)
     {
-        return await _workSpaceRepository.GetAllByUserIdAsync(userId);
+        var workSpaces = await _workSpaceRepository.GetAllByUserIdAsync(userId);
+
+        return workSpaces.Select(ToResponseDTO);
     }
 
-    public async Task<Models.WorkSpace?> GetByIdentifierAsync(string identifier, int userId)
+    public async Task<WorkSpaceResponseDTO?> GetByIdentifierAsync(string identifier, int userId)
     {
         var workSpace = await _workSpaceRepository.GetByIdentifierAsync(identifier);
         if (workSpace is null || workSpace.OwnerId != userId)
@@ -26,10 +29,10 @@ public class WorkSpaceService : IWorkSpaceService
             return null;
         }
 
-        return workSpace;
+        return ToResponseDTO(workSpace);
     }
 
-    public async Task<Models.WorkSpace> CreateAsync(CreateWorkSpaceDTO workSpace, int userId)
+    public async Task<WorkSpaceResponseDTO> CreateAsync(CreateWorkSpaceDTO workSpace, int userId)
     {
         var newWorkSpace = new Models.WorkSpace
         {
@@ -52,7 +55,19 @@ public class WorkSpaceService : IWorkSpaceService
 
         await _workSpaceRepository.CreateUserWorkSpaceAsync(userWorkSpace);
 
-        return newWorkSpace;
+        var now = DateTime.UtcNow;
+        var generalChannel = new ChannelModel
+        {
+            Name = "general",
+            Slug = "general",
+            WorkSpaceId = newWorkSpace.Id,
+            CreatedAt = now,
+            UpdatedAt = now
+        };
+
+        await _workSpaceRepository.CreateChannelAsync(generalChannel);
+
+        return ToResponseDTO(newWorkSpace);
     }
 
     public async Task<IEnumerable<WorkSpaceUserDTO>> GetAllUserByWorkspaceIdAsync(int workspaceId)
@@ -69,5 +84,18 @@ public class WorkSpaceService : IWorkSpaceService
         }
 
         return await _workSpaceRepository.DeleteAsync(id);
+    }
+
+    private static WorkSpaceResponseDTO ToResponseDTO(Models.WorkSpace workSpace)
+    {
+        return new WorkSpaceResponseDTO
+        {
+            Id = workSpace.Id,
+            Name = workSpace.Name,
+            Slug = workSpace.Slug,
+            OwnerId = workSpace.OwnerId,
+            CreatedAt = workSpace.CreatedAt,
+            UpdatedAt = workSpace.UpdatedAt
+        };
     }
 }

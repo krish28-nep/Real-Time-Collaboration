@@ -19,18 +19,39 @@ public class InvitationController : ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<ActionResult<Models.Invitation>> Create([FromBody] CreateInvitationDTO dto)
+	public async Task<ActionResult<InvitationResponseDTO>> Create([FromBody] CreateInvitationDTO dto)
 	{
 		var userId = AuthUserContext.GetCurrentUserId(User);
 		if (userId is null) return Unauthorized();
 
-		var invitation = await _invitationService.CreateAsync(dto.WorkSpaceId, userId.Value);
-		return CreatedAtAction(nameof(GetByToken), new { token = invitation.Token }, invitation);
+		try
+		{
+			var invitation = await _invitationService.CreateAsync(dto.WorkSpaceId, userId.Value, dto.InvitedUserId);
+			return CreatedAtAction(nameof(GetByToken), new { token = invitation.Token }, invitation);
+		}
+		catch (InvalidOperationException exception)
+		{
+			return Conflict(new { message = exception.Message });
+		}
+		catch (ArgumentException exception)
+		{
+			return BadRequest(new { message = exception.Message });
+		}
+	}
+
+	[HttpGet("me")]
+	public async Task<ActionResult<IEnumerable<InvitationResponseDTO>>> GetMyPendingInvitations()
+	{
+		var userId = AuthUserContext.GetCurrentUserId(User);
+		if (userId is null) return Unauthorized();
+
+		var invitations = await _invitationService.GetPendingByUserIdAsync(userId.Value);
+		return Ok(invitations);
 	}
 
 	[AllowAnonymous]
-	[HttpGet("{token}")]
-	public async Task<ActionResult<Models.Invitation>> GetByToken(string token)
+	[HttpGet("{token:length(32)}")]
+	public async Task<ActionResult<InvitationResponseDTO>> GetByToken(string token)
 	{
 		var inv = await _invitationService.GetByTokenAsync(token);
 		if (inv is null) return NotFound();

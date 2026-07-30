@@ -15,5 +15,6 @@ public class Invitation
     public DateTime? AcceptAt { get; set; }
 
     public int InvitedByUserId { get; set; }
+    public int? InvitedUserId { get; set; }
 
 }

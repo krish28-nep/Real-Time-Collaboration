@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using RealTimeCollaboration.Data;
 using RealTimeCollaboration.Modules.WorkSpace.DTOs;
 using RealTimeCollaboration.Modules.WorkSpace.Interfaces;
+using ChannelModel = RealTimeCollaboration.Modules.Channel.Models.Channel;
 
 namespace RealTimeCollaboration.Modules.WorkSpace;
 
@@ -73,6 +74,13 @@ public class WorkSpaceRepository : IWorkSpaceRepository
         _context.UserWorkSpaces.Add(userWorkSpace);
         await _context.SaveChangesAsync();
         return userWorkSpace;
+    }
+
+    public async Task<ChannelModel> CreateChannelAsync(ChannelModel channel)
+    {
+        _context.Channels.Add(channel);
+        await _context.SaveChangesAsync();
+        return channel;
     }
 
     public async Task<bool> IsUserMemberAsync(int userId, int workSpaceId)
