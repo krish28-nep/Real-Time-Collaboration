@@ -52,6 +52,8 @@ logs/
 # Uploaded/generated user files
 wwwroot/avatars/*
 !wwwroot/avatars/.gitkeep
+wwwroot/message-images/*
+!wwwroot/message-images/.gitkeep
 
 # OS files
 .DS_Store
