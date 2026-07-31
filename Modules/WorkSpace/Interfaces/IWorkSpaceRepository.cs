@@ -10,6 +10,8 @@ public interface IWorkSpaceRepository
 
     Task<Models.WorkSpace?> GetByIdentifierAsync(string identifier);
 
+    Task<Models.WorkSpace?> GetByIdentifierForUserAsync(string identifier, int userId);
+
     Task<Models.WorkSpace> CreateAsync(Models.WorkSpace workSpace);
 
     Task<Models.UserWorkSpace> CreateUserWorkSpaceAsync(Models.UserWorkSpace userWorkSpace);

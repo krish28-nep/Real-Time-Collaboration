@@ -23,8 +23,8 @@ public class WorkSpaceService : IWorkSpaceService
 
     public async Task<WorkSpaceResponseDTO?> GetByIdentifierAsync(string identifier, int userId)
     {
-        var workSpace = await _workSpaceRepository.GetByIdentifierAsync(identifier);
-        if (workSpace is null || workSpace.OwnerId != userId)
+        var workSpace = await _workSpaceRepository.GetByIdentifierForUserAsync(identifier, userId);
+        if (workSpace is null)
         {
             return null;
         }

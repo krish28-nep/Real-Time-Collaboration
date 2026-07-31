@@ -17,11 +17,12 @@ public class WorkSpaceRepository : IWorkSpaceRepository
 
     public async Task<IEnumerable<Models.WorkSpace>> GetAllByUserIdAsync(int userId)
     {
-        return await _context.WorkSpaces
-        .AsNoTracking()
-        .Where(w => w.OwnerId == userId)
-        .OrderBy(w => w.Id)
-        .ToListAsync();
+        return await _context.UserWorkSpaces
+            .AsNoTracking()
+            .Where(userWorkSpace => userWorkSpace.UserId == userId)
+            .OrderBy(userWorkSpace => userWorkSpace.JoinedAt)
+            .Select(userWorkSpace => userWorkSpace.WorkSpace)
+            .ToListAsync();
     }
 
     public async Task<Models.WorkSpace?> GetByIdentifierAsync(string identifier)
@@ -41,6 +42,26 @@ public class WorkSpaceRepository : IWorkSpaceRepository
         return await _context.WorkSpaces
             .AsNoTracking()
             .FirstOrDefaultAsync(w => w.Slug == identifier);
+    }
+
+    public async Task<Models.WorkSpace?> GetByIdentifierForUserAsync(string identifier, int userId)
+    {
+        var query = _context.UserWorkSpaces
+            .AsNoTracking()
+            .Where(userWorkSpace => userWorkSpace.UserId == userId);
+
+        if (int.TryParse(identifier, out var id))
+        {
+            return await query
+                .Where(userWorkSpace => userWorkSpace.WorkSpaceById == id)
+                .Select(userWorkSpace => userWorkSpace.WorkSpace)
+                .FirstOrDefaultAsync();
+        }
+
+        return await query
+            .Where(userWorkSpace => userWorkSpace.WorkSpace.Slug == identifier)
+            .Select(userWorkSpace => userWorkSpace.WorkSpace)
+            .FirstOrDefaultAsync();
     }
 
     public async Task<IEnumerable<WorkSpaceUserDTO>> GetAllUsersByWorkspaceIdAsync(int workspaceId)
