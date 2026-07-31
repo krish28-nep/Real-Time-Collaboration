@@ -17,13 +17,19 @@ public class InvitationRepository : IInvitationRepository
     {
         _context.Invitations.Add(invitation);
         await _context.SaveChangesAsync();
-        return invitation;
+        return await _context.Invitations
+            .AsNoTracking()
+            .Include(invitation => invitation.WorkSpace)
+            .Include(invitation => invitation.InvitedByUser)
+            .FirstAsync(existingInvitation => existingInvitation.Id == invitation.Id);
     }
 
     public async Task<Models.Invitation?> GetByTokenAsync(string token)
     {
         return await _context.Invitations
             .AsNoTracking()
+            .Include(invitation => invitation.WorkSpace)
+            .Include(invitation => invitation.InvitedByUser)
             .FirstOrDefaultAsync(i => i.Token == token);
     }
 
@@ -31,6 +37,8 @@ public class InvitationRepository : IInvitationRepository
     {
         return await _context.Invitations
             .AsNoTracking()
+            .Include(invitation => invitation.WorkSpace)
+            .Include(invitation => invitation.InvitedByUser)
             .Where(invitation =>
                 invitation.InvitedUserId == userId
                 && invitation.AcceptAt == null
