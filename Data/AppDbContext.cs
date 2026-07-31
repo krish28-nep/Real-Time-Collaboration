@@ -85,6 +85,24 @@ namespace RealTimeCollaboration.Data
             modelBuilder.Entity<Reaction>()
                 .HasIndex(reaction => new { reaction.MessageId, reaction.UserId, reaction.Emoji })
                 .IsUnique();
+
+            modelBuilder.Entity<Invitation>()
+                .HasOne(invitation => invitation.WorkSpace)
+                .WithMany()
+                .HasForeignKey(invitation => invitation.WorkSpaceId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Invitation>()
+                .HasOne(invitation => invitation.InvitedByUser)
+                .WithMany()
+                .HasForeignKey(invitation => invitation.InvitedByUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Invitation>()
+                .HasOne(invitation => invitation.InvitedUser)
+                .WithMany()
+                .HasForeignKey(invitation => invitation.InvitedUserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

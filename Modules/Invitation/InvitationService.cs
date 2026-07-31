@@ -118,8 +118,11 @@ public class InvitationService : IInvitationService
         {
             Id = invitation.Id,
             WorkSpaceId = invitation.WorkSpaceId,
+            WorkSpaceName = invitation.WorkSpace?.Name,
             InvitedUserId = invitation.InvitedUserId,
             InvitedByUserId = invitation.InvitedByUserId,
+            InvitedByUsername = invitation.InvitedByUser?.Username,
+            InvitedByEmail = invitation.InvitedByUser?.Email,
             Token = invitation.Token,
             ExpireAt = invitation.ExpireAt,
             AcceptAt = invitation.AcceptAt

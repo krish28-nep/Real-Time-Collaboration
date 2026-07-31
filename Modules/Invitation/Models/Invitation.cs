@@ -1,5 +1,6 @@
 namespace RealTimeCollaboration.Modules.Invitation.Models;
 
+using RealTimeCollaboration.Modules.User.Models;
 using RealTimeCollaboration.Modules.WorkSpace.Models;
 
 public class Invitation
@@ -15,6 +16,9 @@ public class Invitation
     public DateTime? AcceptAt { get; set; }
 
     public int InvitedByUserId { get; set; }
+    public User InvitedByUser { get; set; } = null!;
+
     public int? InvitedUserId { get; set; }
+    public User? InvitedUser { get; set; }
 
 }
